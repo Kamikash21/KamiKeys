@@ -24,5 +24,5 @@ Este plugin oferece um sistema completo e configurável de gerenciamento de chav
 *   Plugin totalmente configurável e personalizável com cores.
 *   Extremamente completo, configurado, otimizado e organizado.
 
-## Organização dos Tipos de Key
+## Organização dos Tipos de Key 
 
