@@ -8,6 +8,8 @@ import com.kamiplugins.kamikeys.database.DatabaseManager;
 import com.kamiplugins.kamikeys.manager.ConfigManager;
 import com.kamiplugins.kamikeys.manager.KeyManager;
 import com.kamiplugins.kamikeys.utils.ColorUtils;
+import com.kamiplugins.kamikeys.utils.KeyData;
+import org.bukkit.configuration.serialization.ConfigurationSerialization;
 import org.bukkit.plugin.java.JavaPlugin;
 import com.kamiplugins.kamikeys.commands.GiveKeyCommand;
 
