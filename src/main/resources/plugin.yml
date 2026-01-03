@@ -1,0 +1,22 @@
+name: KamiKeys
+version: 1.0
+main: com.kamiplugins.kamikeys.Main
+api-version: 1.20 # Ou a versão que você está usando
+commands:
+  kamikeys:
+    description: Menu de ajuda.
+  ativar:
+    description: Ativar uma key de recompensa.
+  gerarkey:
+    description: Gerar novas keys.
+    permission: kamikeys.admin
+  darkey:
+    description: Da uma key para um jogador especifico.
+    usage: /darkey <jogador> <tipo>
+    permission: kamikeys.admin
+  apagarkey:
+    description: Apagar keys de um tipo.
+    permission: kamikeys.admin
+  key:
+    description: Comando principal de gerenciamento.
+    permission: kamikeys.admin

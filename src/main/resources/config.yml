@@ -1,0 +1,42 @@
+# Arquivo de configuração do KamiKeys Plugin (Versão 1.0)
+
+Database:
+  Type: SQLITE # Mude de MYSQL para SQLITE aqui
+  Host: localhost
+  Port: 3306
+  Name: kamikeys_db
+  User: usuario_do_banco
+  Pass: senha_do_banco
+
+Settings:
+  Case-Sensitive-Keys: false # Define se as keys diferenciam maiusculas de minusculas
+  Sound-On-Activate: "ENTITY_PLAYER_LEVELUP" # Som ao ativar (veja sons do Bukkit 1.20.6)
+
+Messages:
+  NoPermission: "&cVocê não tem permissão para usar este comando."
+  # Adicione outras mensagens aqui (ex: Activated, InvalidKey, etc.)
+
+Types:
+  # Tipos de chaves, tamanhos e comandos executados
+  Basica:
+    Length: 15
+    Prefix: "&8[Basica]"
+    Commands:
+      - "give {player} diamond 1"
+      - "points give {player} 500"
+      - "msg {player} &aVoce recebeu uma recompensa basica!"
+
+  Comum:
+    Length: 20
+    Prefix: "&b[Comum]"
+    Commands:
+      - "give {player} iron_block 16"
+      - "lp user {player} parent add vip_comum"
+
+  Rara:
+    Length: 30
+    Prefix: "&6[Rara]"
+    Commands:
+      - "crate give {player} rare_key 1"
+      - "broadcast &6&l[KamiKeys] &fO jogador &b{player} &fativou uma KEY RARA!"
+
