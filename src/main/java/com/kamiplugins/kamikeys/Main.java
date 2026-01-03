@@ -13,11 +13,10 @@ import org.bukkit.configuration.serialization.ConfigurationSerialization;
 import org.bukkit.plugin.java.JavaPlugin;
 import com.kamiplugins.kamikeys.commands.GiveKeyCommand;
 
+import java.util.Objects;
+
 
 public class Main extends JavaPlugin {
-
-    // Instância estática para acesso global
-    private static Main instance;
 
     // Gerenciadores do plugin
     private ConfigManager configManager;
@@ -26,7 +25,7 @@ public class Main extends JavaPlugin {
 
     @Override
     public void onEnable() {
-        instance = this;
+        // Instância estática para acesso global
 
         // 1. Inicializa os gerenciadores de configuração e chaves
         this.configManager = new ConfigManager(this);
@@ -39,27 +38,27 @@ public class Main extends JavaPlugin {
 
         // --- COMANDO /KEY (AdminCommands) ---
         AdminCommands adminExecutor = new AdminCommands(this);
-        getCommand("key").setExecutor(adminExecutor);
-        getCommand("key").setTabCompleter(adminExecutor);
+        Objects.requireNonNull(getCommand("key")).setExecutor(adminExecutor);
+        Objects.requireNonNull(getCommand("key")).setTabCompleter(adminExecutor);
 
         // --- COMANDO /ATIVAR (AtivarCommand) ---
         AtivarCommand ativarExecutor = new AtivarCommand(this);
-        getCommand("ativar").setExecutor(ativarExecutor);
-        getCommand("ativar").setTabCompleter(ativarExecutor);
+        Objects.requireNonNull(getCommand("ativar")).setExecutor(ativarExecutor);
+        Objects.requireNonNull(getCommand("ativar")).setTabCompleter(ativarExecutor);
 
         // --- OUTROS COMANDOS ---
-        // Esses comandos não possuem Tab Completer personalizado, então registramos apenas o Executor
+        // Esses comandos não possuem Tab Completer personalizado, então registamos apenas o Executor
         GerarKeyCommand gerarKeyExecutor = new GerarKeyCommand(this);
-        getCommand("gerarkey").setExecutor(gerarKeyExecutor);
-        getCommand("gerarkey").setTabCompleter(gerarKeyExecutor); // Adiciona o Tab Completer
-        getCommand("kamikeys").setExecutor(new KamikeysCommand());
+        Objects.requireNonNull(getCommand("gerarkey")).setExecutor(gerarKeyExecutor);
+        Objects.requireNonNull(getCommand("gerarkey")).setTabCompleter(gerarKeyExecutor); // Adiciona o Tab Completer
+        Objects.requireNonNull(getCommand("kamikeys")).setExecutor(new KamikeysCommand());
 
         // --- ADICIONE O COMANDO /DARKEY AQUI ---
         GiveKeyCommand giveKeyCommand = new GiveKeyCommand(this);
-        getCommand("darkey").setExecutor(giveKeyCommand);
-        getCommand("darkey").setTabCompleter(giveKeyCommand); // Define o TabCompleter
+        Objects.requireNonNull(getCommand("darkey")).setExecutor(giveKeyCommand);
+        Objects.requireNonNull(getCommand("darkey")).setTabCompleter(giveKeyCommand); // Define o TabCompleter
 
-        // 3. Log de inicialização (usando o utilitário de cores)
+        // 3. “Log” de inicialização (usando o utilitário de cores)
         getServer().getConsoleSender().sendMessage(ColorUtils.translate("&b[KamiKeys] &aPlugin iniciado com sucesso! (1.20.6)"));
     }
 
@@ -75,11 +74,6 @@ public class Main extends JavaPlugin {
             databaseManager.disconnect();
         }
         getServer().getConsoleSender().sendMessage(ColorUtils.translate("&b[KamiKeys] &cPlugin desligado."));
-    }
-
-    // Método estático para que outras classes possam chamar Main.getInstance()
-    public static Main getInstance() {
-        return instance;
     }
 
     // Getters para acessar os gerenciadores
