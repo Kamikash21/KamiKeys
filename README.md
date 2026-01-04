@@ -2,7 +2,7 @@
 ### Sistema Premium de Keys Ativáveis para Servidores Minecraft
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](https://opensource.org/licenses/MIT)
-[![Spigot 1.20+](https://img.shields.io/badge/Minecraft-1.16%2B-orange)]()
+[![Spigot 1.20+](https://img.shields.io/badge/Minecraft-1.20%2B-orange)]()
 [![KamiPlugins](https://img.shields.io/badge/By-KamiPlugins-purple)]()
 
 > **Segurança** • **Exclusividade** • **Auditoria Total** • **Experiência Premium**
