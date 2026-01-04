@@ -10,47 +10,73 @@ import java.io.IOException;
 public class ConfigManager {
 
     private final Main plugin;
-    private File keysFile;
     private FileConfiguration keysConfig;
+    private File logsFile;
 
     public ConfigManager(Main plugin) {
         this.plugin = plugin;
-        plugin.saveDefaultConfig(); // Cria o config.yml padrão
-        createKeysFile();
+        this.plugin.saveDefaultConfig(); // gera config.yml se não existir
+        setupFiles();
     }
 
-    private void createKeysFile() {
-        keysFile = new File(plugin.getDataFolder(), "keys.yml");
-        if (!keysFile.exists()) {
+    private void setupFiles() {
+        // Cria pasta de logs
+        File logsDir = new File(plugin.getDataFolder(), "logs");
+        if (!logsDir.exists()) {
+            logsDir.mkdirs();
+        }
+
+        // Caminho do arquivo de logs (do config.yml)
+        String logPath = plugin.getConfig().getString("Logs.FilePath", "plugins/KamiKeys/logs/keys.log");
+        this.logsFile = new File(logPath);
+
+        if (!logsFile.exists()) {
             try {
-                // Cria o arquivo keys.yml vazio se ele não existir
-                keysFile.createNewFile();
+                logsFile.getParentFile().mkdirs();
+                logsFile.createNewFile();
             } catch (IOException e) {
+                plugin.getLogger().severe("Não foi possível criar o arquivo de logs: " + logsFile.getAbsolutePath());
                 e.printStackTrace();
-                plugin.getLogger().severe("Não foi possível criar o arquivo keys.yml!");
             }
         }
-        keysConfig = YamlConfiguration.loadConfiguration(keysFile);
+
+        // Carrega ou cria keys.yml
+        File keysFile = new File(plugin.getDataFolder(), "keys.yml");
+        if (!keysFile.exists()) {
+            try {
+                keysFile.createNewFile();
+            } catch (IOException e) {
+                plugin.getLogger().severe("Não foi possível criar keys.yml");
+                e.printStackTrace();
+            }
+        }
+        this.keysConfig = YamlConfiguration.loadConfiguration(keysFile);
     }
 
-    // Retorna a configuração do arquivo keys.yml para leitura
     public FileConfiguration getKeysConfig() {
         return keysConfig;
     }
 
-    // Salva o conteúdo do buffer de memória para o arquivo keys.yml
     public void saveKeys() {
+        File keysFile = new File(plugin.getDataFolder(), "keys.yml");
         try {
             keysConfig.save(keysFile);
         } catch (IOException e) {
+            plugin.getLogger().severe("Erro ao salvar keys.yml");
             e.printStackTrace();
-            plugin.getLogger().severe("Não foi possível salvar as chaves no keys.yml!");
         }
     }
 
-    // Recarrega as configurações da memória para o arquivo
-    public void reloadConfigs() {
-        plugin.reloadConfig(); // Recarrega o config.yml principal
-        keysConfig = YamlConfiguration.loadConfiguration(keysFile); // Recarrega o keys.yml
+    public File getLogsFile() {
+        return logsFile;
+    }
+
+    public void reloadAll() {
+        plugin.reloadConfig(); // recarrega config.yml
+        // Recarrega keys.yml
+        File keysFile = new File(plugin.getDataFolder(), "keys.yml");
+        this.keysConfig = YamlConfiguration.loadConfiguration(keysFile);
+        // Recria logs se necessário
+        setupFiles();
     }
 }

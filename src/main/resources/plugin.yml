@@ -1,22 +1,51 @@
 name: KamiKeys
-version: 1.0
+version: 1.5
 main: com.kamiplugins.kamikeys.Main
-api-version: 1.20 # Ou a versão que você está usando
+api-version: 1.20
+authors: [ Kamikash ]
+description: Sistema seguro de keys/gift cards para servidores Minecraft
+website: https://github.com/Kamikash21/KamiKeys.git
+
 commands:
   kamikeys:
-    description: Menu de ajuda.
+    description: Gerenciar keys e vouchers
+    usage: |
+      /kamikeys venda <tipo> <quantidade>
+      /kamikeys gerar <tipo> <quantidade>
+      /kamikeys dar <player> <tipo>
+      /kamikeys exportar
+      /kamikeys apagar origem <venda|interna|exclusiva>
+      /kamikeys apagar tipo <tipo>
+      /kamikeys apagar player <player>
+      /kamikeys apagar tudo
+      /kamikeys list
+      /kamikeys reload
+      /kamikeys confirmar apagar_tudo
+    permission: kamikeys.admin
+
   ativar:
-    description: Ativar uma key de recompensa.
-  gerarkey:
-    description: Gerar novas keys.
-    permission: kamikeys.admin
-  darkey:
-    description: Da uma key para um jogador especifico.
-    usage: /darkey <jogador> <tipo>
-    permission: kamikeys.admin
-  apagarkey:
-    description: Apagar keys de um tipo.
-    permission: kamikeys.admin
-  key:
-    description: Comando principal de gerenciamento.
-    permission: kamikeys.admin
+    description: Ativa uma key ou voucher
+    usage: /ativar <key>
+    permission: kamikeys.use
+
+  keys:
+    description: Abre seu menu de keys
+    usage: /keys
+    permission: kamikeys.gui
+
+permissions:
+  kamikeys.admin:
+    description: Acesso total ao plugin
+    default: op
+  kamikeys.use:
+    description: Ativar keys/vouchers
+    default: true
+  kamikeys.gui:
+    description: Abrir GUI de keys
+    default: true
+  kamikeys.voucher.player:
+    description: Criar voucher das próprias keys
+    default: false
+  kamikeys.voucher.adm:
+    description: Criar voucher de keys internas
+    default: false

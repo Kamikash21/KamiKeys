@@ -1,7 +1,9 @@
-# Arquivo de configuração do KamiKeys Plugin (Versão 1.0)
+# KamiKeys - Configuração Completa (Versão 1.5)
+# Documentação: todos os campos são editáveis e opcionais
 
 Database:
-  Type: SQLITE # Mude de MYSQL para SQLITE aqui
+  Type: SQLITE
+  # Configurações MySQL (só usadas se Type: MYSQL)
   Host: localhost
   Port: 3306
   Name: kamikeys_db
@@ -9,34 +11,92 @@ Database:
   Pass: senha_do_banco
 
 Settings:
-  Case-Sensitive-Keys: false # Define se as keys diferenciam maiusculas de minusculas
-  Sound-On-Activate: "ENTITY_PLAYER_LEVELUP" # Som ao ativar (veja sons do Bukkit 1.20.6)
+  Case-Sensitive-Keys: false
+  Sound-On-Activate: "ENTITY_PLAYER_LEVELUP"
 
 Messages:
   NoPermission: "&cVocê não tem permissão para usar este comando."
-  # Adicione outras mensagens aqui (ex: Activated, InvalidKey, etc.)
+  InvalidKey: "&cKey inválida ou já usada."
+  KeyExclusiveToOther: "&cEssa key é exclusiva para outro jogador."
+  VoucherExpired: "&cEste voucher expirou! Era válido por {dias} dias."
+  SuccessActivate: "&aKey ativada com sucesso!"
 
+# Tipos de key (use nomes em minúsculas)
 Types:
-  # Tipos de chaves, tamanhos e comandos executados
-  Basica:
+  basica:
     Length: 15
-    Prefix: "&8[Basica]"
+    PrefixColor: "&8"
     Commands:
-      - "give {player} diamond 1"
-      - "points give {player} 500"
-      - "msg {player} &aVoce recebeu uma recompensa basica!"
+      - "points give {player} 100"
+    SuccessMessage: "&aVocê resgatou &e100 coins&a!"
+    Title: "&a+100 Coins!"
+    Subtitle: "&7Resgatado com sucesso"
+    TitleDuration: 60
+    UseActionbar: true
+    ActionbarMessage: "&a✓ &e+100 Coins"
 
-  Comum:
+  comum:
     Length: 20
-    Prefix: "&b[Comum]"
+    PrefixColor: "&b"
     Commands:
-      - "give {player} iron_block 16"
-      - "lp user {player} parent add vip_comum"
+      - "points give {player} 1000"
+      - "give {player} diamond 5"
+    SuccessMessage: "&aVocê resgatou &e1000 coins &a+ &b5 diamantes&a!"
+    Title: "&a+1000 Coins!"
+    Subtitle: "&7Parabéns!"
+    TitleDuration: 80
+    UseActionbar: true
+    ActionbarMessage: "&a✓ &e+1000 Coins"
 
-  Rara:
+  especial:
     Length: 30
-    Prefix: "&6[Rara]"
+    PrefixColor: "&6"
     Commands:
-      - "crate give {player} rare_key 1"
-      - "broadcast &6&l[KamiKeys] &fO jogador &b{player} &fativou uma KEY RARA!"
+      - "points give {player} 5000"
+      - "lp user {player} parent add vip"
+    SuccessMessage: "&aVIP ativado! Bem-vindo ao clube exclusivo!"
+    Title: "&6&lVIP ATIVADO!"
+    Subtitle: "&eAproveite seus benefícios"
+    TitleDuration: 100
+    UseActionbar: true
+    ActionbarMessage: "&6✓ &eVIP Ativado!"
 
+# Voucher (item físico)
+Voucher:
+  DaysValid: 30
+  ItemMaterial: PAPER
+
+# Feedback visual (ligar/desligar globalmente)
+Feedback:
+  UseChatMessages: true
+  UseTitle: true
+  UseActionbar: true
+  UseSounds: true
+  UseParticles: false
+
+# Logs em arquivo
+Logs:
+  Enabled: true
+  FilePath: "plugins/KamiKeys/logs/keys.log"
+  KeepDays: -1  # -1 = ilimitado; 90 = 3 meses
+
+# Segurança (opcional)
+Security:
+  BlockUnsafeCommands: false
+  AllowedCommandPrefixes:
+    - "playerpoints"
+    - "give"
+    - "eco"
+    - "lp"
+    - "tell"
+    - "msg"
+    - "i"
+    - "item"
+    - "kit"
+    - "tp"
+    - "spawn"
+    - "warp"
+    - "op"
+    - "deop"
+    - "gamemode"
+    - "fly"

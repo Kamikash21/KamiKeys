@@ -1,6 +1,28 @@
-# Project exclude paths
-/target/
-bin/
-.idea/
+# Maven
+target/
+out/
+build/
+
+# IDE
 *.iml
+.idea/
+.vscode/
+*.log
 logs/
+*.hprof
+
+# Servidor
+plugins/
+world/
+world_nether/
+world_the_end/
+server.properties
+banned-*.txt
+ops.json
+whitelist.json
+usercache.json
+session.lock
+
+# Configs pessoais
+config.yml
+keys.yml
