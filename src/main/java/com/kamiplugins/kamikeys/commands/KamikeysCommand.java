@@ -1,7 +1,7 @@
 package com.kamiplugins.kamikeys.commands;
 
 import com.kamiplugins.kamikeys.Main;
-import com.kamiplugins.kamikeys.gui.AdminGUI;
+import com.kamiplugins.kamikeys.admin.AdminMainMenu;
 import com.kamiplugins.kamikeys.utils.ColorUtils;
 import net.md_5.bungee.api.chat.ClickEvent;
 import net.md_5.bungee.api.chat.ComponentBuilder;
@@ -58,17 +58,28 @@ public class KamikeysCommand implements CommandExecutor, TabCompleter {
         String sub = args[0].toLowerCase();
 
         switch (sub) {
-            case "reload":
+            case "reload": {
+                // Recarrega todos os arquivos e recria se não existirem
                 plugin.getConfigManager().reloadAll();
-                sender.sendMessage(ColorUtils.translate("&aConfigurações recarregadas com sucesso!"));
-                return true;
 
-            case "list": {
-                if (!(sender instanceof Player)) {
-                    sender.sendMessage("§cComando só para jogadores.");
-                    return true;
+                // Mensagem de sucesso
+                sender.sendMessage(ColorUtils.translate("&aConfigurações e arquivos recarregados com sucesso!"));
+
+                // Opcional: informar se arquivos foram recriados
+                if (!plugin.getConfigManager().getKeysFile().exists()) {
+                    sender.sendMessage(ColorUtils.translate("&eArquivo &fkeys.yml &enão encontrado, criando padrão..."));
                 }
-                new AdminGUI(plugin, (Player) sender).open();
+                if (!plugin.getConfigManager().getConfigFile().exists()) {
+                    sender.sendMessage(ColorUtils.translate("&eArquivo &fconfig.yml &enão encontrado, criando padrão..."));
+                }
+
+                // ✅ Som de sucesso
+                if (plugin.getConfig().getBoolean("Settings.EnableSounds", true) && sender instanceof Player) {
+                    Player p = (Player) sender;
+                    String sound = plugin.getConfig().getString("Sounds.Admin.Success", "block.note_block.chime");
+                    p.playSound(p.getLocation(), sound, 1.0f, 1.0f);
+                }
+
                 return true;
             }
 
@@ -103,6 +114,7 @@ public class KamikeysCommand implements CommandExecutor, TabCompleter {
                         continue;
                     }
 
+                    // ✅ SALVA COM ORIGEM "venda"
                     boolean saved = plugin.getKeyManager().saveKey(key, tipo, "venda", null, sender.getName());
                     if (saved) {
                         keysGeradas.append(key).append("\n");
@@ -118,7 +130,7 @@ public class KamikeysCommand implements CommandExecutor, TabCompleter {
 
                     for (String key : keysArray) {
                         if (sender instanceof Player) {
-                            TextComponent component = new TextComponent(ColorUtils.translate("&b" + key));
+                            TextComponent component = new TextComponent(ColorUtils.translate("&e🔑 Key: &b" + key));
                             component.setClickEvent(new ClickEvent(ClickEvent.Action.SUGGEST_COMMAND, key));
                             component.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT,
                                     new ComponentBuilder("Clique para copiar").create()));
@@ -126,15 +138,23 @@ public class KamikeysCommand implements CommandExecutor, TabCompleter {
                         } else {
                             sender.sendMessage(ColorUtils.translate("&b" + key));
                         }
+
+                        // Log individual
                         String details = "Tipo: " + tipo + " | Origem: venda";
                         logKey(key, "GERADA", details, sender.getName());
+
+                        // Som
+                        if (plugin.getConfig().getBoolean("Settings.EnableSounds", true) && sender instanceof Player) {
+                            Player p = (Player) sender;
+                            String sound = plugin.getConfig().getString("Sounds.Admin.KeyGenerated", "block.note_block.pling");
+                            p.playSound(p.getLocation(), sound, 1.0f, 1.5f);
+                        }
                     }
-
-
                 } else {
                     sender.sendMessage("§cNenhuma chave foi gerada.");
                 }
                 return true;
+
             }
 
             case "gerar": {
@@ -168,6 +188,7 @@ public class KamikeysCommand implements CommandExecutor, TabCompleter {
                         continue;
                     }
 
+                    // ✅ SALVA COM ORIGEM "interna"
                     boolean saved = plugin.getKeyManager().saveKey(key, tipo, "interna", null, sender.getName());
                     if (saved) {
                         keysGeradas.append(key).append("\n");
@@ -183,7 +204,7 @@ public class KamikeysCommand implements CommandExecutor, TabCompleter {
 
                     for (String key : keysArray) {
                         if (sender instanceof Player) {
-                            TextComponent component = new TextComponent(ColorUtils.translate("&b" + key));
+                            TextComponent component = new TextComponent(ColorUtils.translate("&e🔑 Key: &b" + key));
                             component.setClickEvent(new ClickEvent(ClickEvent.Action.SUGGEST_COMMAND, key));
                             component.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT,
                                     new ComponentBuilder("Clique para copiar").create()));
@@ -191,13 +212,23 @@ public class KamikeysCommand implements CommandExecutor, TabCompleter {
                         } else {
                             sender.sendMessage(ColorUtils.translate("&b" + key));
                         }
+
+                        // Log individual
                         String details = "Tipo: " + tipo + " | Origem: interna";
                         logKey(key, "GERADA", details, sender.getName());
+
+                        // Som
+                        if (plugin.getConfig().getBoolean("Settings.EnableSounds", true) && sender instanceof Player) {
+                            Player p = (Player) sender;
+                            String sound = plugin.getConfig().getString("Sounds.Admin.KeyGenerated", "block.note_block.pling");
+                            p.playSound(p.getLocation(), sound, 1.0f, 1.5f);
+                        }
                     }
                 } else {
                     sender.sendMessage("§cNenhuma chave foi gerada.");
                 }
                 return true;
+
             }
 
             case "dar": {
@@ -208,27 +239,23 @@ public class KamikeysCommand implements CommandExecutor, TabCompleter {
                 String playerNome = args[1];
                 String tipo = args[2];
 
-                // Verifica se o jogador já entrou no servidor
+                // Validações
                 if (!plugin.getKeyManager().isPlayerKnown(playerNome)) {
                     sender.sendMessage(ColorUtils.translate("&cErro: O jogador '&f" + playerNome + "&c' nunca entrou neste servidor!"));
                     return true;
                 }
-
                 if (!plugin.getConfig().contains("Types." + tipo)) {
                     sender.sendMessage("§cTipo '" + tipo + "' não existe no config.yml.");
                     return true;
                 }
 
+                // Gera e salva key exclusiva
                 String key = plugin.getKeyManager().generateKey(tipo);
                 if (key == null) {
                     sender.sendMessage("§cErro ao gerar key do tipo " + tipo);
                     return true;
                 }
-
-                // Pega UUID do jogador (mesmo offline)
                 String playerUUID = plugin.getKeyManager().getPlayerUUID(playerNome);
-
-                // Salva com dados completos
                 boolean saved = plugin.getKeyManager().saveExclusiveKey(key, tipo, playerNome, playerUUID, sender.getName());
                 if (!saved) {
                     sender.sendMessage("§cErro: não foi possível salvar a key.");
@@ -239,37 +266,50 @@ public class KamikeysCommand implements CommandExecutor, TabCompleter {
                 LocalDateTime now = LocalDateTime.now();
                 DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss");
 
+                // Mensagem de sucesso
                 String tipoFormatado = tipo.substring(0, 1).toUpperCase() + (tipo.length() > 1 ? tipo.substring(1).toLowerCase() : "");
                 String prefixColor = plugin.getConfig().getString("Types." + tipo + ".PrefixColor", "&8");
                 String header = "&e[KamiKeys] &aKey " + prefixColor + "[" + tipoFormatado + "] &agerada para &f" + playerNome + " &aem &f" + now.format(formatter) + "&a!";
                 sender.sendMessage(ColorUtils.translate(header));
 
+                // Envia key e UUID como mensagens clicáveis
                 if (sender instanceof Player) {
-                    // Linha 1: Key (clicável)
-                    TextComponent keyLine = new TextComponent(ColorUtils.translate("&bKey: "));
-                    TextComponent keyValue = new TextComponent(ColorUtils.translate(key + " &7[Clique para copiar]"));
-                    keyValue.setClickEvent(new ClickEvent(ClickEvent.Action.SUGGEST_COMMAND, key));
-                    keyValue.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT,
-                            new ComponentBuilder("Clique para sugerir no chat").create()));
-                    keyLine.addExtra(keyValue);
-                    ((Player) sender).spigot().sendMessage(keyLine);
+                    Player player = (Player) sender;
 
-                    // Linha 2: UUID (clicável)
-                    TextComponent uuidLine = new TextComponent(ColorUtils.translate("&8UUID: "));
+                    // Linha 1: UUID (clicável)
+                    TextComponent uuidLine = new TextComponent(ColorUtils.translate("&8👤 UUID: "));
                     TextComponent uuidValue = new TextComponent(ColorUtils.translate(playerUUID + " &7[Clique para copiar]"));
                     uuidValue.setClickEvent(new ClickEvent(ClickEvent.Action.SUGGEST_COMMAND, playerUUID));
                     uuidValue.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT,
                             new ComponentBuilder("Clique para sugerir no chat").create()));
                     uuidLine.addExtra(uuidValue);
-                    ((Player) sender).spigot().sendMessage(uuidLine);
+                    player.spigot().sendMessage(uuidLine);
+
+                    // Linha 2: Key (clicável)
+                    TextComponent keyLine = new TextComponent(ColorUtils.translate("&e🔑 Key: "));
+                    TextComponent keyValue = new TextComponent(ColorUtils.translate("&b" + key + " &7[Clique para copiar]"));
+                    keyValue.setClickEvent(new ClickEvent(ClickEvent.Action.SUGGEST_COMMAND, key));
+                    keyValue.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT,
+                            new ComponentBuilder("Clique para sugerir no chat").create()));
+                    keyLine.addExtra(keyValue);
+                    player.spigot().sendMessage(keyLine);
+
                 } else {
+                    // Console
                     sender.sendMessage(ColorUtils.translate("&bKey: " + key));
                     sender.sendMessage(ColorUtils.translate("&7UUID: " + playerUUID));
                 }
 
-                // Após gerar a key
+                // Log e som
                 String details = "Tipo: " + tipo + " | Para: " + playerNome + " (UUID: " + playerUUID + ")";
                 logKey(key, "GERADA_EXCLUSIVA", details, sender.getName());
+
+                if (plugin.getConfig().getBoolean("Settings.EnableSounds", true) && sender instanceof Player) {
+                    Player p = (Player) sender;
+                    String sound = plugin.getConfig().getString("Sounds.Admin.KeyGenerated", "block.note_block.pling"); // ← CORREÇÃO
+                    p.playSound(p.getLocation(), sound, 1.0f, 1.5f);
+                }
+
                 return true;
             }
 
@@ -290,6 +330,12 @@ public class KamikeysCommand implements CommandExecutor, TabCompleter {
                     String origem = args[2].toLowerCase();
                     if (!"venda".equals(origem) && !"interna".equals(origem) && !"exclusiva".equals(origem)) {
                         sender.sendMessage("§cOrigem inválida. Use: venda, interna ou exclusiva.");
+                        // ✅ Som de erro
+                        if (plugin.getConfig().getBoolean("Settings.EnableSounds", true) && sender instanceof Player) {
+                            Player p = (Player) sender;
+                            String sound = plugin.getConfig().getString("Sounds.Admin.Error", "block.note_block.bass");
+                            p.playSound(p.getLocation(), sound, 1.0f, 1.0f);
+                        }
                         return true;
                     }
 
@@ -322,6 +368,12 @@ public class KamikeysCommand implements CommandExecutor, TabCompleter {
                     }
 
                     sender.sendMessage(ColorUtils.translate("&a✓ Removidas &f" + keysApagadas.size() + " &akeys de origem '&f" + origem + "&a'."));
+                    // ✅ Som de sucesso
+                    if (plugin.getConfig().getBoolean("Settings.EnableSounds", true) && sender instanceof Player) {
+                        Player p = (Player) sender;
+                        String sound = plugin.getConfig().getString("Sounds.Admin.KeyDeleted", "block.note_block.bass");
+                        p.playSound(p.getLocation(), sound, 1.0f, 1.0f);
+                    }
                     return true;
 
                 } else if ("tipo".equals(alvo) && args.length >= 3) {
@@ -355,6 +407,12 @@ public class KamikeysCommand implements CommandExecutor, TabCompleter {
                     }
 
                     sender.sendMessage(ColorUtils.translate("&a✓ Removidas &f" + keysApagadas.size() + " &akeys do tipo '&f" + tipoAlvo + "&a'."));
+                    // ✅ Som de sucesso
+                    if (plugin.getConfig().getBoolean("Settings.EnableSounds", true) && sender instanceof Player) {
+                        Player p = (Player) sender;
+                        String sound = plugin.getConfig().getString("Sounds.Admin.KeyDeleted", "block.note_block.bass");
+                        p.playSound(p.getLocation(), sound, 1.0f, 1.0f);
+                    }
                     return true;
 
                 } else if ("player".equals(alvo) && args.length >= 3) {
@@ -382,11 +440,17 @@ public class KamikeysCommand implements CommandExecutor, TabCompleter {
                     }
 
                     sender.sendMessage(ColorUtils.translate("&a✓ Removidas &f" + keysApagadas.size() + " &akeys exclusivas de '&f" + playerNome + "&a'."));
+                    // ✅ Som de sucesso
+                    if (plugin.getConfig().getBoolean("Settings.EnableSounds", true) && sender instanceof Player) {
+                        Player p = (Player) sender;
+                        String sound = plugin.getConfig().getString("Sounds.Admin.KeyDeleted", "block.note_block.chime"); // ← Usar KeyDeleted
+                        p.playSound(p.getLocation(), sound, 1.0f, 1.0f);
+                    }
                     return true;
 
                 } else if ("tudo".equals(alvo)) {
                     int total = 0;
-                    if (keysConfig.contains("keys")) { // ← usa a variável já existente
+                    if (keysConfig.contains("keys")) {
                         total = keysConfig.getConfigurationSection("keys").getKeys(false).size();
                     }
 
@@ -402,11 +466,42 @@ public class KamikeysCommand implements CommandExecutor, TabCompleter {
                     sender.sendMessage(ColorUtils.translate("&c| &f/kamikeys confirmar apagar_tudo    &c|"));
                     sender.sendMessage(ColorUtils.translate("&c[===============================]"));
 
+                    // ✅ Som de confirmação (alerta)
+                    if (plugin.getConfig().getBoolean("Settings.EnableSounds", true) && sender instanceof Player) {
+                        Player p = (Player) sender;
+                        String sound = plugin.getConfig().getString("Sounds.Admin.ConfirmationNeeded", "entity.ender_dragon.growl");
+                        p.playSound(p.getLocation(), sound, 1.0f, 1.0f);
+                    }
                     return true;
-
 
                 } else {
                     sender.sendMessage("§cSubcomando desconhecido. Use: origem, tipo, player ou tudo");
+                    // ✅ Som de erro
+                    if (plugin.getConfig().getBoolean("Settings.EnableSounds", true) && sender instanceof Player) {
+                        Player p = (Player) sender;
+                        String sound = plugin.getConfig().getString("Sounds.Admin.Error", "block.note_block.bass");
+                        p.playSound(p.getLocation(), sound, 1.0f, 1.0f);
+                    }
+                    return true;
+                }
+
+            }
+
+            case "list": {
+                if (!(sender instanceof Player)) {
+                    sender.sendMessage("§cComando só para jogadores.");
+                    return true;
+                }
+
+                Player player = (Player) sender;
+                if (player.hasPermission("kamikeys.admin")) {
+                    // ✅ Abre o MENU PRINCIPAL (não a GUI antiga)
+                    AdminMainMenu mainMenu = new AdminMainMenu(plugin, player);
+                    plugin.getAdminKeysGUIs().put(player.getUniqueId(), mainMenu);
+                    mainMenu.open();
+                    return true;
+                } else {
+                    player.sendMessage(ColorUtils.translate("&c❌ Você não tem permissão para isso!"));
                     return true;
                 }
             }
@@ -414,6 +509,12 @@ public class KamikeysCommand implements CommandExecutor, TabCompleter {
             case "confirmar": {
                 if (args.length < 2 || !"apagar_tudo".equals(args[1])) {
                     sender.sendMessage("§cUso: /kamikeys confirmar apagar_tudo");
+                    // ✅ Som de erro (comando inválido)
+                    if (plugin.getConfig().getBoolean("Settings.EnableSounds", true) && sender instanceof Player) {
+                        Player p = (Player) sender;
+                        String sound = plugin.getConfig().getString("Sounds.Admin.Error", "block.note_block.bass");
+                        p.playSound(p.getLocation(), sound, 1.0f, 1.0f);
+                    }
                     return true;
                 }
 
@@ -426,6 +527,13 @@ public class KamikeysCommand implements CommandExecutor, TabCompleter {
                 plugin.getConfigManager().saveKeys();
 
                 sender.sendMessage(ColorUtils.translate("&c✓ Todas as &f" + total + " &ckeys foram apagadas!"));
+
+                // ✅ Som de sucesso (após apagar)
+                if (plugin.getConfig().getBoolean("Settings.EnableSounds", true) && sender instanceof Player) {
+                    Player p = (Player) sender;
+                    String sound = plugin.getConfig().getString("Sounds.Admin.Success", "block.note_block.chime");
+                    p.playSound(p.getLocation(), sound, 1.0f, 1.0f);
+                }
 
                 // Log
                 try (PrintWriter out = new PrintWriter(new FileWriter(plugin.getConfigManager().getLogsFile(), true))) {
@@ -520,6 +628,7 @@ public class KamikeysCommand implements CommandExecutor, TabCompleter {
                     completions.addAll(types);
                 }
             } else if ("dar".equals(args[0])) {
+                // Sugere nomes de jogadores que já entraram no servidor
                 for (OfflinePlayer p : Bukkit.getOfflinePlayers()) {
                     if (p.hasPlayedBefore()) {
                         completions.add(p.getName());
@@ -534,7 +643,13 @@ public class KamikeysCommand implements CommandExecutor, TabCompleter {
                 completions.add("apagar_tudo");
             }
         } else if (args.length == 3) {
-            if ("apagar".equals(args[0])) {
+            if ("dar".equals(args[0])) {
+                // Sugere tipos de keys
+                if (plugin.getConfig().contains("Types")) {
+                    Set<String> types = plugin.getConfig().getConfigurationSection("Types").getKeys(false);
+                    completions.addAll(types);
+                }
+            } else if ("apagar".equals(args[0])) {
                 String subAlvo = args[1];
                 if ("origem".equals(subAlvo)) {
                     completions.add("venda");

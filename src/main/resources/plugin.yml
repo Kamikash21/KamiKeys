@@ -3,7 +3,7 @@ version: 1.5
 main: com.kamiplugins.kamikeys.Main
 api-version: 1.20
 authors: [ Kamikash ]
-description: Sistema seguro de keys/gift cards para servidores Minecraft
+description: Sistema premium e seguro de keys/gift cards para servidores Minecraft
 website: https://github.com/Kamikash21/KamiKeys.git
 
 commands:
@@ -31,7 +31,7 @@ commands:
   keys:
     description: Abre seu menu de keys
     usage: /keys
-    permission: kamikeys.gui
+    permission: kamikeys.player
 
 permissions:
   kamikeys.admin:
@@ -49,3 +49,6 @@ permissions:
   kamikeys.voucher.adm:
     description: Criar voucher de keys internas
     default: false
+  kamikeys.gui.admin:
+    description: Abrir GUI com ações (copiar/apagar)
+    default: op

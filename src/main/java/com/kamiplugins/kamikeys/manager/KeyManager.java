@@ -47,10 +47,13 @@ public class KeyManager {
         keysConfig.set("keys." + key + ".tipo", type);
         keysConfig.set("keys." + key + ".origem", origin);
         if (exclusiveFor != null && !exclusiveFor.isEmpty()) {
-            keysConfig.set("keys." + key + ".exclusivo_para", exclusiveFor);
+            // Para keys não exclusivas, exclusivo_para.nome pode não existir
+            keysConfig.set("keys." + key + ".exclusivo_para.nome", exclusiveFor);
         }
-        keysConfig.set("keys." + key + ".gerado_em", System.currentTimeMillis() / 1000);
-        keysConfig.set("keys." + key + ".gerador", generator);
+
+        // 🔥 CORREÇÃO: NOMES PADRONIZADOS 🔥
+        keysConfig.set("keys." + key + ".data_geracao", getCurrentDateTime());
+        keysConfig.set("keys." + key + ".gerado_por", generator);
 
         plugin.getConfigManager().saveKeys();
         return true;
@@ -109,10 +112,24 @@ public class KeyManager {
         keysConfig.set("keys." + key + ".origem", "exclusiva");
         keysConfig.set("keys." + key + ".exclusivo_para.nome", playerName);
         keysConfig.set("keys." + key + ".exclusivo_para.uuid", playerUUID);
-        keysConfig.set("keys." + key + ".gerado_em", System.currentTimeMillis() / 1000);
-        keysConfig.set("keys." + key + ".gerador", generator);
+
+        // 🔥 CORREÇÃO: NOMES PADRONIZADOS 🔥
+        keysConfig.set("keys." + key + ".data_geracao", getCurrentDateTime());
+        keysConfig.set("keys." + key + ".gerado_por", generator);
 
         plugin.getConfigManager().saveKeys();
         return true;
+    }
+
+    private String getCurrentDateTime() {
+        return new java.text.SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new java.util.Date());
+    }
+
+    public String getKeyGenerator(String key) {
+        return plugin.getConfigManager().getKeysConfig().getString("keys." + key + ".gerado_por", "Sistema");
+    }
+
+    public String getKeyGenerationDate(String key) {
+        return plugin.getConfigManager().getKeysConfig().getString("keys." + key + ".data_geracao", "Desconhecida");
     }
 }

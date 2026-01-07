@@ -12,6 +12,7 @@ Database:
 
 Settings:
   Case-Sensitive-Keys: false
+  EnableSounds: true
   Sound-On-Activate: "ENTITY_PLAYER_LEVELUP"
 
 Messages:
@@ -40,7 +41,6 @@ Types:
     PrefixColor: "&b"
     Commands:
       - "points give {player} 1000"
-      - "give {player} diamond 5"
     SuccessMessage: "&aVocê resgatou &e1000 coins &a+ &b5 diamantes&a!"
     Title: "&a+1000 Coins!"
     Subtitle: "&7Parabéns!"
@@ -53,7 +53,6 @@ Types:
     PrefixColor: "&6"
     Commands:
       - "points give {player} 5000"
-      - "lp user {player} parent add vip"
     SuccessMessage: "&aVIP ativado! Bem-vindo ao clube exclusivo!"
     Title: "&6&lVIP ATIVADO!"
     Subtitle: "&eAproveite seus benefícios"
@@ -100,3 +99,43 @@ Security:
     - "deop"
     - "gamemode"
     - "fly"
+
+# Sons premium
+Sounds:
+  Admin:
+    KeyGenerated: "block.note_block.pling"
+    KeyDeleted: "block.note_block.chime"
+    ConfirmationNeeded: "entity.ender_dragon.growl"
+    Success: "block.note_block.chime"
+    Error: "block.note_block.bass"
+    MenuOpen: "block.shulker_box.open"
+    SubmenuOpen: "block.chest.open"
+
+  Player:
+    KeyActivated: "entity.player.levelup"
+    KeyFailed: "block.note_block.bass"
+    VoucherCreated: "block.note_block.iron_xylophone"
+
+# Itens personalizáveis
+Items:
+  # GUI do jogador
+  PlayerKeyItem: "TRIPWIRE_HOOK"
+
+  # Menu principal do admin
+  AdminMenuVenda: "GOLD_INGOT"
+  AdminMenuInterna: "DIAMOND"
+  AdminMenuExclusiva: "PLAYER_HEAD"
+  AdminMenuTodas: "ENCHANTED_BOOK"
+
+  # Submenus do admin
+  AdminKeyItem: "TRIPWIRE_HOOK"
+  PreviousButton: "SPECTRAL_ARROW"
+  NextButton: "SPECTRAL_ARROW"
+  CloseButton: "BARRIER"
+  BackgroundPane: "RED_STAINED_GLASS_PANE"
+
+# Configurações da GUI do admin
+AdminGUI:
+  EnableParticles: false
+  EnableActionBar: true
+  ConfirmationCodeLength: 0  # 0 = sem código; 4 = código de 4 dígitos

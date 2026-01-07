@@ -1,66 +1,46 @@
-# 🗝️ KamiKeys
-### Sistema Premium de Keys Ativáveis para Servidores Minecraft
+# 📋 KamiKeys v1.5 – Sistema Premium de Keys
 
-[![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](https://opensource.org/licenses/MIT)
-[![Spigot 1.20+](https://img.shields.io/badge/Minecraft-1.20%2B-orange)]()
-[![KamiPlugins](https://img.shields.io/badge/By-KamiPlugins-purple)]()
+**modo premium ativado! Qualidade ao seu alcance**
 
-> **Segurança** • **Exclusividade** • **Auditoria Total** • **Experiência Premium**
+Sistema antipay2win, centralizado e totalmente automatizado para gerenciamento de keys de ativação em servidores Minecraft.
 
----
+## ✨ Recursos Premium
+- **GUI do Admin completa** com 4 categorias organizadas (Venda, Interna, Exclusiva, Todas)
+- **Submenus inteligentes** com filtragem automática e navegação fluída
+- **Lore premium** com informações completas (gerado por, data, origem, dono)
+- **Cópia segura de keys** para administradores (fecha menu automaticamente)
+- **Exclusão com confirmação** de segurança
+- **Totalmente configurável** via config.yml
+- **Sons e feedbacks premium** personalizáveis
+- **Mensagens educativas** sobre responsabilidade administrativa
 
-## 🌟 Por que escolher o KamiKeys?
+## 🎮 Comandos
+- `/keys` – Menu personalizado do jogador
+- `/ativar <key>` – Ativa uma key manualmente
+- `/kamikeys list` – Acesso ao sistema administrativo completo
+- `/kamikeys venda <tipo> <qtd>` – Gera keys para vendas externas
+- `/kamikeys gerar <tipo> <qtd>` – Gera keys para uso interno
+- `/kamikeys dar <player> <tipo>` – Cria key exclusiva para jogador
 
-KamiKeys não é só um gerador de códigos — é um **sistema de recompensas profissional**, projetado para:
+## 🔒 Segurança Profissional
+- Separação clara de responsabilidades (jogadores ativam, admins gerenciam)
+- Auditoria implícita de visualização de keys
+- Proteção contra cliques acidentais e exclusões não intencionais
 
-- ✅ **Vender itens reais** (VIP, coins, ranks) via Discord + Pix
-- ✅ **Distribuir recompensas exclusivas** em eventos
-- ✅ **Controlar acesso com segurança total** (UUID, logs, anti-fraude)
-- ✅ **Manter auditoria completa** de todas as ações
-- ✅ **Impressionar seus jogadores** com uma experiência visual premium
+## ⚙️ Instalação
+1. Baixe `KamiKeys-v1.5.0.jar`
+2. Coloque na pasta `plugins/` do seu servidor
+3. Inicie o servidor (o `config.yml` será gerado automaticamente)
+4. Personalize o `config.yml` conforme sua necessidade
+5. Use os comandos com permissões apropriadas
 
----
-
-## 🚀 Recursos-Chave
-
-| Categoria | Recurso |
-|---------|--------|
-| 🔑 **Geração de Keys** | Suporte a múltiplos tipos (`basica`, `comum`, `rara`), com cores, comandos e mensagens personalizáveis |
-| 👤 **Exclusividade** | Keys vinculadas à **UUID do jogador** — impossível de transferir |
-| 📋 **Gestão Inteligente** | Apagar por **origem**, **tipo**, **jogador** ou **tudo** (com confirmação segura) |
-| 💾 **Backup Visual** | Comando `/kamikeys exportar` gera YAML organizado para arquivamento |
-| 📊 **Log Completo** | Cada key gerada, ativada ou apagada é registrada com detalhes |
-| 🎨 **Experiência Premium** | Mensagens coloridas, keys clicáveis, TabComplete inteligente, GUI em desenvolvimento |
-| 🔐 **Segurança** | Validação rigorosa, proteção contra uso indevido, sistema pronto para vouchers |
-
----
-
-## 📦 Instalação
-
-1. **Baixe** o arquivo `.jar` da [última versão](https://github.com/seu-usuario/KamiKeys/releases)
-2. **Coloque** em `plugins/` do seu servidor Spigot/Paper 1.20+
-3. **Reinicie** o servidor
-4. **Configure** `plugins/KamiKeys/config.yml` conforme sua necessidade
-
-> 💡 **Recomendado**: use com [PlayerPoints](https://www.spigotmc.org/resources/playerpoints.6343/) para recompensas em coins.
+## 📝 Configuração
+Tudo é configurável no `config.yml`:
+- Tipos de keys e recompensas
+- Cores, materiais e sons
+- Mensagens e comportamentos
+- Sistema de origens organizado
 
 ---
-
-## ⚙️ Exemplo de Configuração (`config.yml`)
-
-```yaml
-Types:
-  basica:
-    Length: 15
-    PrefixColor: "&8"
-    Commands:
-      - "playerpoints give {player} 100"
-    SuccessMessage: "&aVocê resgatou &e100 coins&a!"
-
-  especial:
-    Length: 30
-    PrefixColor: "&6"
-    Commands:
-      - "playerpoints give {player} 5000"
-      - "lp user {player} parent add vip"
-    SuccessMessage: "&aVIP ativado! Bem-vindo ao clube exclusivo!"
+**Desenvolvido para a Rede KamiCraftMC**  
+*Qualidade ao seu alcance*

@@ -12,6 +12,7 @@ public class ConfigManager {
     private final Main plugin;
     private FileConfiguration keysConfig;
     private File logsFile;
+    private File keysFile;
 
     public ConfigManager(Main plugin) {
         this.plugin = plugin;
@@ -41,16 +42,16 @@ public class ConfigManager {
         }
 
         // Carrega ou cria keys.yml
-        File keysFile = new File(plugin.getDataFolder(), "keys.yml");
-        if (!keysFile.exists()) {
+        this.keysFile = new File(plugin.getDataFolder(), "keys.yml"); // ← INICIALIZA O ATRIBUTO!
+        if (!this.keysFile.exists()) {
             try {
-                keysFile.createNewFile();
+                this.keysFile.createNewFile();
             } catch (IOException e) {
                 plugin.getLogger().severe("Não foi possível criar keys.yml");
                 e.printStackTrace();
             }
         }
-        this.keysConfig = YamlConfiguration.loadConfiguration(keysFile);
+        this.keysConfig = YamlConfiguration.loadConfiguration(this.keysFile); // ← usa o atributo
     }
 
     public FileConfiguration getKeysConfig() {
@@ -72,11 +73,32 @@ public class ConfigManager {
     }
 
     public void reloadAll() {
-        plugin.reloadConfig(); // recarrega config.yml
-        // Recarrega keys.yml
+        // Recarrega config.yml (cria se não existir)
+        plugin.saveDefaultConfig();
+        plugin.reloadConfig();
+
+        // Recarrega ou cria keys.yml
         File keysFile = new File(plugin.getDataFolder(), "keys.yml");
+        if (!keysFile.exists()) {
+            try {
+                keysFile.getParentFile().mkdirs(); // Garante pasta KamiKeys/
+                keysFile.createNewFile(); // Cria keys.yml vazio
+                plugin.getLogger().info("Arquivo keys.yml não encontrado, criando padrão...");
+            } catch (IOException e) {
+                plugin.getLogger().severe("Erro ao criar keys.yml: " + e.getMessage());
+            }
+        }
         this.keysConfig = YamlConfiguration.loadConfiguration(keysFile);
-        // Recria logs se necessário
+
+        // Recarrega logs e outros arquivos (se tiver)
         setupFiles();
+    }
+
+    public File getKeysFile() {
+        return keysFile;
+    }
+
+    public File getConfigFile() {
+        return new File(plugin.getDataFolder(), "config.yml");
     }
 }

@@ -25,6 +25,56 @@ public class AtivarCommand implements CommandExecutor, TabCompleter {
     public AtivarCommand(Main plugin) {
         this.plugin = plugin;
     }
+    public void executeActivation(Player player, String key) {
+        // Chama o método principal de ativação
+        activateKey(player, key, player.getName());
+    }
+
+    public void activateKey(Player player, String key, String playerName) {
+        FileConfiguration keysConfig = plugin.getConfigManager().getKeysConfig();
+
+        if (!keysConfig.contains("keys." + key)) {
+            player.sendMessage(ColorUtils.translate("&c❌ Key inválida ou já usada!"));
+            return;
+        }
+
+        String tipo = keysConfig.getString("keys." + key + ".tipo");
+        if (tipo == null) {
+            player.sendMessage(ColorUtils.translate("&cErro ao ler tipo da key!"));
+            return;
+        }
+
+        // Executa comandos do tipo
+        List<String> commands = plugin.getConfig().getStringList("Types." + tipo + ".Commands");
+        for (String cmd : commands) {
+            cmd = cmd.replace("{player}", playerName);
+            Bukkit.dispatchCommand(Bukkit.getConsoleSender(), cmd);
+        }
+
+        // Remove a key
+        keysConfig.set("keys." + key, null);
+        plugin.getConfigManager().saveKeys();
+
+        // Mensagem de sucesso
+        player.sendMessage(ColorUtils.translate("&a✅ Key ativada com sucesso!"));
+
+        // Log
+        String details = "Tipo: " + tipo + " | Por: " + playerName; // ← Agora funciona
+        logActivation(key, "ATIVADA", details);
+
+        // Som (se habilitado)
+        if (plugin.getConfig().getBoolean("Settings.EnableSounds", true)) {
+            String sound = plugin.getConfig().getString("Sounds.Player.KeyActivated", "entity.player.levelup");
+            player.playSound(player.getLocation(), sound, 1.0f, 1.0f);
+        }
+
+        // Atualiza a GUI do jogador (se estiver aberta)
+        if (player.isOnline()) {
+            if (plugin.getPlayerKeysGUIs().containsKey(player.getUniqueId())) {
+                plugin.getPlayerKeysGUIs().get(player.getUniqueId()).refresh();
+            }
+        }
+    }
 
     @Override
     public List<String> onTabComplete(CommandSender sender, Command command, String alias, String[] args) {
@@ -124,6 +174,13 @@ public class AtivarCommand implements CommandExecutor, TabCompleter {
         }
 
         logActivation(keyCode, logAction, logDetails);
+        if (plugin.getConfig().getBoolean("Settings.EnableSounds", true)) {
+            // "player" já existe nesse escopo (é o jogador que ativou)
+            if (player instanceof Player) {
+                String sound = plugin.getConfig().getString("Sounds.Player.KeyActivated", "entity.player.levelup");
+                player.playSound(player.getLocation(), sound, 1.0f, 1.0f);
+            }
+        }
 
         // Feedback com mensagem configurada
         String successMessage = plugin.getConfig().getString("Types." + configKeyName + ".SuccessMessage", "&aChave ativada com sucesso!");
@@ -144,7 +201,7 @@ public class AtivarCommand implements CommandExecutor, TabCompleter {
             out.println("| " + details);
             out.println();
         } catch (IOException e) {
-            plugin.getLogger().severe("Erro ao escrever no log de ativação: " + e.getMessage());
+            plugin.getLogger().severe("Erro ao escrever no log: " + e.getMessage());
         }
     }
 }
