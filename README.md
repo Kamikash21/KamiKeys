@@ -43,4 +43,4 @@ Tudo é configurável no `config.yml`:
 
 ---
 **Desenvolvido para a Rede KamiCraftMC**  
-*Qualidade ao seu alcance*
+*Modo premium ativado! Qualidade ao seu alcance.*
