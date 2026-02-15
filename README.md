@@ -1,4 +1,4 @@
-# 📋 KamiKeys v1.5 – Sistema Premium de Keys
+# 📋 KamiKeys v2.0 – Sistema Premium de Keys
 
 **modo premium ativado! Qualidade ao seu alcance**
 
@@ -28,7 +28,7 @@ Sistema antipay2win, centralizado e totalmente automatizado para gerenciamento d
 - Proteção contra cliques acidentais e exclusões não intencionais
 
 ## ⚙️ Instalação
-1. Baixe `KamiKeys-v1.5.0.jar`
+1. Baixe `KamiKeys-v2.0.jar`
 2. Coloque na pasta `plugins/` do seu servidor
 3. Inicie o servidor (o `config.yml` será gerado automaticamente)
 4. Personalize o `config.yml` conforme sua necessidade

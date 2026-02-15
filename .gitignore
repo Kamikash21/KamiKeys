@@ -13,6 +13,8 @@ logs/
 
 # Servidor
 plugins/
+logs/
+backups/
 world/
 world_nether/
 world_the_end/
@@ -26,3 +28,4 @@ session.lock
 # Configs pessoais
 config.yml
 keys.yml
+vouchers.yml
