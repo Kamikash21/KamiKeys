@@ -1,8 +1,8 @@
 package com.kamiplugins.kamikeys.models.dtos;
 
 import com.kamiplugins.kamikeys.models.enums.KeyOrigin;
-import com.kamiplugins.kamikeys.models.enums.KeyType;
 import com.kamiplugins.kamikeys.models.enums.KeyState;
+import com.kamiplugins.kamikeys.models.enums.KeyType;
 
 public class KeyDTO {
     private String code;

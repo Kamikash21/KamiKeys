@@ -1,8 +1,8 @@
 package com.kamiplugins.kamikeys.models;
 
 import com.kamiplugins.kamikeys.models.enums.KeyOrigin;
-import com.kamiplugins.kamikeys.models.enums.KeyType;
 import com.kamiplugins.kamikeys.models.enums.KeyState;
+import com.kamiplugins.kamikeys.models.enums.KeyType;
 
 import java.util.UUID;
 

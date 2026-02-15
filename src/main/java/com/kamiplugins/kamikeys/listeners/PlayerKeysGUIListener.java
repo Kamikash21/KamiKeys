@@ -28,7 +28,6 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.persistence.PersistentDataType;
 
-import java.awt.event.FocusAdapter;
 import java.util.*;
 import java.util.stream.Collectors;
 

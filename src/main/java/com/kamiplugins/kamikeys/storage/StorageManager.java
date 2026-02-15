@@ -3,9 +3,9 @@ package com.kamiplugins.kamikeys.storage;
 import com.kamiplugins.kamikeys.Main;
 import com.kamiplugins.kamikeys.repositories.KeyRepository;
 import com.kamiplugins.kamikeys.repositories.VoucherRepository;
+import com.kamiplugins.kamikeys.storage.database.DatabaseConnection;
 import com.kamiplugins.kamikeys.storage.database.DatabaseKeyStorage;
 import com.kamiplugins.kamikeys.storage.database.DatabaseVoucherStorage;
-import com.kamiplugins.kamikeys.storage.database.DatabaseConnection;
 import com.kamiplugins.kamikeys.storage.yaml.YAMLKeyStorage;
 import com.kamiplugins.kamikeys.storage.yaml.YAMLVoucherStorage;
 

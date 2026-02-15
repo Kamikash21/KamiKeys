@@ -5,12 +5,9 @@ import com.kamiplugins.kamikeys.models.enums.KeyOrigin;
 import com.kamiplugins.kamikeys.models.enums.KeyState;
 import com.kamiplugins.kamikeys.models.enums.KeyType;
 import com.kamiplugins.kamikeys.repositories.KeyRepository;
-import com.kamiplugins.kamikeys.storage.database.DatabaseConnection;
 
 import java.sql.*;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;

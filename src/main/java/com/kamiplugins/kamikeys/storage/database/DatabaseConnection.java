@@ -1,6 +1,7 @@
 package com.kamiplugins.kamikeys.storage.database;
 
 import com.kamiplugins.kamikeys.Main;
+
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
