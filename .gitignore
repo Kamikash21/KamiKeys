@@ -13,7 +13,6 @@ logs/
 
 # Servidor
 plugins/
-logs/
 backups/
 world/
 world_nether/
