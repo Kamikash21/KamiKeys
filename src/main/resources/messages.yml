@@ -1,0 +1,126 @@
+# KamiKeys v2.0 - Mensagens de UX
+# Arquivo de mensagens centralizado
+
+general:
+  prefix: "&e[KamiKeys] "
+
+common:
+  no_permission: "&cVocê não tem permissão para usar este comando."
+  only_player: "&cApenas jogadores podem usar este comando."
+  error: "&cErro: {details}"
+  usage: "&aUso: &f{usage}"
+  success: "&aOperação realizada com sucesso!"
+
+rate_limit:
+  wait: "&cAguarde {time}s antes de usar este comando novamente."
+
+confirm:
+  pending: "{prefixplugin} &eConfirmação necessária\n&7Use &f/kamikeys confirmar &7para continuar"
+  pending_delete: "{prefixplugin} &eConfirmação de exclusão necessária\n&7Modo: &f{modo}&7, Filtro: &f{filtro}\n&7Use &f/kamikeys confirmar &7para continuar"
+  none: "{prefixplugin} &cNenhuma ação pendente para confirmar."
+  expired: "{prefixplugin} &cConfirmação expirada. Ação cancelada."
+  done: "{prefixplugin} &aAção confirmada com sucesso"
+  timeout_warning: "{prefixplugin} &eAtenção: Sua confirmação expira em &c{time}s&e."
+
+admin:
+  help: |
+    &7- Comandos:
+    &e/kamikeys list
+    &e/kamikeys gerar <venda | interna> <tipo> <qtd>
+    &e/kamikeys dar <player> <tipo>
+    &e/kamikeys apagar <origem | tipo|player|tudo>
+    &e/kamikeys backup
+    &e/kamikeys reload
+  
+
+  reload_done: "&aRecarregado com sucesso."
+  generation_done: "{prefixplugin} &f{count} &akeys &7(&f{origem}&7) &ado tipo {tipo} &ageradas com sucesso!"
+  generation_key_line: "&7Key: &b{key}"
+  generation_key_hover: "Clique para copiar"
+  dar_done: "{prefixplugin} &aKey do tipo {tipo} &aentregue para &f{player}&a.\n&7Key: &b{key}"
+  delete_all_warning: "{prefixplugin} &c⚠ Atenção: &rEsta ação irá apagar &ctodas as keys&r do servidor!\n{prefixplugin} &c⚠ Confirme apenas se tiver certeza absoluta!"
+  delete_origin_sale_warning:
+    - " "
+    - "&e&l⚠ ATENÇÃO!"
+    - "&7Você está prestes a apagar &cTODAS &7as keys de &2VENDA &7com status &aATIVA."
+    - "&7Use apenas se tiver certeza do que está fazendo."
+    - " "
+
+player:
+  key_received: "&e🎁Você recebeu uma key exclusiva!\n&7🎁Recompensa: &e{reward}"
+  activation_success_detailed: "&aKey ativada com sucesso. \nForam adicionados &e{reward} &aa sua conta!"
+  activation_success_voucher: "&eVoucher &aativado com sucesso. \nForam adicionados &e{reward} &aa sua conta!"
+  key_not_found: "&cKey não encontrada! Código inválido."
+  key_not_active: "&cKey já foi utilizada ou expirou!"
+  key_not_yours: "&cEsta key não pertence a você!"
+  key_deleted: "&cKey excluída com sucesso!"
+
+activation:
+  cooldown:
+    message: "{prefixplugin} &cAguarde &f{time}s &cpara ativar outra key."
+    actionbar: "&cCooldown: &f{time}s"
+    title: "&c&lCOOLDOWN"
+    subtitle: "&fAguarde {time}s"
+  success:
+    title: "&a&lKEY ATIVADA!"
+    subtitle: "&e+{reward}"
+    actionbar: "&a✓ Ativação bem-sucedida!"
+  voucher_success:
+    title: "&e&lVOUCHER &a&lATIVADO!"
+    subtitle: "&e+{reward}"
+    actionbar: "&a✓ Ativação bem-sucedida!"
+  error_key:
+    title: "&c&lERRO!"
+    subtitle: "&fKey inválida"
+    actionbar: "&c✗ Ativação falhou!"
+  error_key_used:
+    title: "&c&lERRO!"
+    subtitle: "&fKey já foi utilizada ou expirou!"
+    actionbar: "&c✗ Ativação falhou!"
+  error_key_not_yours:
+    title: "&c&lERRO!"
+    subtitle: "&fKey não é sua"
+    actionbar: "&c✗ Ativação falhou!"
+  deletion_success:
+    title: "&c&lExcluída!"
+    subtitle: "&fKey excluída com sucesso!"
+    actionbar: "&c✗ Key Deletada!"
+
+effects:
+  title:
+    success:
+      title: "&a&lSUCESSO!"
+      subtitle: "&eOperação concluída"
+    error:
+      title: "&c&lERRO!"
+      subtitle: "&cOperação falhou"
+    confirm_pending:
+      title: "&e&lCONFIRMAÇÃO"
+      subtitle: "&fConfirme sua ação"
+    confirm_done:
+      title: "&a&lCONFIRMADO"
+      subtitle: "&eAção executada"
+    delete_all:
+      title: "&c⚠ AÇÃO CRÍTICA ⚠"
+      subtitle: "&fTodas as keys serão apagadas"
+  actionbar:
+    success: "&a✓ Concluído"
+    error: "&c✗ Erro"
+    cooldown: "&e⏳ Aguarde..."
+    confirm_pending: "&fConfirme sua ação"
+
+#placeholders:
+# {details}
+# {usage}
+# {time}
+# {action}
+# {files_status}
+# {count}
+# {tipo}
+# {key}
+# {prefixplugin}
+# {origem}
+# {reward}
+# {player}
+# {modo}
+# {filtro}
